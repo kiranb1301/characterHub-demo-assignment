@@ -1,12 +1,9 @@
-# TODO There's certainly more than one way to do this task, so take your pick.
-# backend_repo/apps/demo/serializers.py
 from rest_framework import serializers
 from .models import Post, Comment
 from django.contrib.auth.models import User
 
-# Serializer for the Comment model
+# TODO There's certainly more than one way to do this task, so take your pick.
 class CommentSerializer(serializers.ModelSerializer):
-    # Include the username of the comment's author
     author = serializers.CharField(source='user.username')
 
     class Meta:
@@ -14,8 +11,15 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ['id', 'text', 'timestamp', 'author']
 
 class PostSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Post model.
+
+    This serializer is used to:
+    - Return post details including the author's username and the count of comments.
+    - Include up to 3 random comments associated with the post.
+    """
     comment_count = serializers.IntegerField(source='comments.count', read_only=True)
-    comments = serializers.SerializerMethodField()   # 👈 override here
+    comments = serializers.SerializerMethodField()
     author = serializers.CharField(source='user.username')
 
     class Meta:
@@ -23,6 +27,5 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ['id', 'text', 'timestamp', 'author', 'comment_count', 'comments']
 
     def get_comments(self, obj):
-        # Return at most 3 random comments
         comments = obj.comments.order_by('?')[:3]
         return CommentSerializer(comments, many=True).data

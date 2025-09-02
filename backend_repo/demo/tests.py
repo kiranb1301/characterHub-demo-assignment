@@ -21,7 +21,7 @@ class PostAPITestCase(APITestCase):
         """
         self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.post = Post.objects.create(text='Test post', user=self.user)
-        for i in range(5):  # Create 5 comments for this post
+        for i in range(5):
             Comment.objects.create(text=f'Comment {i + 1}', post=self.post, user=self.user)
 
     def test_post_list(self):
@@ -35,8 +35,8 @@ class PostAPITestCase(APITestCase):
         """
         response = self.client.get('/api/posts/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), 1)  # Only 1 post created
-        self.assertLessEqual(len(response.data['results'][0]['comments']), 3)  # Only up to 3 comments
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertLessEqual(len(response.data['results'][0]['comments']), 3)
 
     def test_random_comments(self):
         """
@@ -49,4 +49,4 @@ class PostAPITestCase(APITestCase):
         response = self.client.get('/api/posts/')
         post = response.data['results'][0]
         comments = post['comments']
-        self.assertLessEqual(len(comments), 3)  # Should return 3 or fewer comments
+        self.assertLessEqual(len(comments), 3)

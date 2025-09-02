@@ -42,17 +42,14 @@ class PostViewSet(viewsets.ModelViewSet):
         
         posts = self.get_queryset()
 
-        # Iterate through posts and randomly select up to 3 comments
         for post in posts:
             comments = list(post.comments.all())
             random_comments = random.sample(comments, 3) if len(comments) >= 3 else comments
             post.comments.set(random_comments)  
 
-        # Apply pagination
         paginator = self.pagination_class()
         result_page = paginator.paginate_queryset(posts, request)
         
-        # Serialize the posts and return paginated response
         serializer = self.get_serializer(result_page, many=True)
         
         return paginator.get_paginated_response(serializer.data)
