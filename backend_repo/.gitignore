@@ -1,0 +1,27 @@
+# Ignore Python virtual environment
+myenv/
+
+# Ignore Node.js modules
+node_modules/
+
+# Ignore Python bytecode
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore Django migrations
+*/migrations/
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore log files
+*.log
+
+# Ignore IDE-specific files (e.g., VS Code)
+.vscode/
+
+# Ignore system files (e.g., macOS, Windows)
+.DS_Store
+Thumbs.db
